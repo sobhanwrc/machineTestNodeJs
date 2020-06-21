@@ -20,7 +20,7 @@ mongoose
   .then(() => console.log("Database connected successfully"))
   .catch(err => console.log(err));
 
-mongoose.set("debug", true);
+mongoose.set("debug", false);
 //#endregion
 
 //#region set cross origin
