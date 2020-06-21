@@ -4,7 +4,7 @@
   "description": "cricket",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon --exec babel-node ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "sobhan das",
@@ -17,5 +17,11 @@
     "lodash": "^4.17.15",
     "mongoose": "^5.9.19",
     "nodemon": "^2.0.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5"
   }
 }
