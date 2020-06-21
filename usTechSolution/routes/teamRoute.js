@@ -10,7 +10,7 @@ let app = express.Router()
 
 app.get('/teamLists', async (req, res) => {
     try {
-       const lists = await Team.find().sort({name : 1})
+       const lists = await Team.find({},{name : 1, logoUri : 1}).sort({name : 1})
        if(lists.length > 0){
         res.send({
             status : true,
@@ -34,12 +34,12 @@ app.get('/teamLists', async (req, res) => {
     }
 })
 
-app.get('/teamDetail', async(req, res) => {
+app.get('/teamDetail/:teamId', async(req, res) => {
     try {
         const teamId = req.params.teamId
         if(teamId){
         const teamId = req.params.teamId
-            const teamDetail = await Team.findById(teamId)
+            const teamDetail = await Team.findById(teamId, {name : 1, logoUri : 1})
             if(teamDetail){
                 let responseObj = {}
 
@@ -47,16 +47,16 @@ app.get('/teamDetail', async(req, res) => {
                 const playerLists = await Player.find({teamId : teamId}).sort({firstName : 1})
                 if(playerLists.length > 0){
                     responseObj = {
-                        ...teamDetail,
+                        ...teamDetail.toObject(),
                         playerLists : playerLists
+                    }
+                }else{
+                    responseObj = {
+                        ...teamDetail.toObject(),
+                        playerLists : []
                     }
                 }
                 //#endregion
-
-                responseObj = {
-                    ...teamDetail,
-                    playerLists : []
-                }
 
                 res.send({
                     status : true,
