@@ -15,7 +15,7 @@ app.get('/teamLists', async (req, res) => {
         res.send({
             status : true,
             statusCode : 200,
-            message : "No teams found.",
+            message : `${lists.length} teams found successfully.`,
             data : lists
         })
        }
@@ -42,7 +42,7 @@ app.get('/teamDetail', async(req, res) => {
             const teamDetail = await Team.findById(teamId)
             if(teamDetail){
                 let responseObj = {}
-                
+
                 //#region find team players
                 const playerLists = await Player.find({teamId : teamId}).sort({firstName : 1})
                 if(playerLists.length > 0){
