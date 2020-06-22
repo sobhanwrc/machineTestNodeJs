@@ -1,4 +1,5 @@
 import express from "express"
+import fileUpload from "express-fileupload"
 import http from "http"
 import mongoose from "mongoose"
 import path from "path"
@@ -20,7 +21,7 @@ mongoose
   .then(() => console.log("Database connected successfully"))
   .catch(err => console.log(err));
 
-mongoose.set("debug", false);
+mongoose.set("debug", true);
 //#endregion
 
 //#region set cross origin
@@ -40,11 +41,17 @@ app.use(allowCrossDomain);
 //#endregion
 
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
-app.use(bodyParser.json({ limit: "50mb" }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.urlencoded({ extended: true}));
+app.use(bodyParser.json())
+app.use(fileUpload({
+  limits : {
+    fileSize : 2097152 //2mb
+  },
+  abortOnLimit : true,
+  responseOnLimit : "File size maximum 2MB"
+}));
 
-app.use(express.static(path.join(__dirname,'public')))
+app.use(express.static(path.join(__dirname, "public")))
 
 //#region load router
 app.use('/api', teamRoute)
